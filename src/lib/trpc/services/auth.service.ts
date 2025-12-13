@@ -2,7 +2,7 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { TRPCError } from "@trpc/server";
 import { connectToDatabase } from "@/lib/db/connect";
-import Admin from "@/lib/db/models/admin";
+import User from "@/lib/db/models/user";
 import PasswordResetToken from "@/lib/db/models/password-reset-token";
 import type {
   ForgotPasswordInput,
@@ -16,32 +16,34 @@ import type {
  * Handles all authentication-related business logic
  */
 
-export interface CurrentAdminDTO {
+export interface CurrentUserDTO {
   id: string;
   name: string;
   email: string;
+  role: string;
   createdAt: Date;
 }
 
 /**
- * Get current admin by ID
+ * Get current user by ID
  */
-export async function getCurrentAdmin(adminId: string): Promise<CurrentAdminDTO> {
+export async function getCurrentUser(userId: string): Promise<CurrentUserDTO> {
   await connectToDatabase();
 
-  const admin = await Admin.findById(adminId);
-  if (!admin) {
+  const user = await User.findById(userId);
+  if (!user) {
     throw new TRPCError({
       code: "NOT_FOUND",
-      message: "Admin not found",
+      message: "User not found",
     });
   }
 
   return {
-    id: admin._id.toString(),
-    name: admin.name,
-    email: admin.email,
-    createdAt: admin.createdAt,
+    id: user._id.toString(),
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    createdAt: user.createdAt,
   };
 }
 
@@ -51,25 +53,25 @@ export async function getCurrentAdmin(adminId: string): Promise<CurrentAdminDTO>
 export async function requestPasswordReset(input: ForgotPasswordInput) {
   await connectToDatabase();
 
-  const admin = await Admin.findOne({ email: input.email.toLowerCase() });
+  const user = await User.findOne({ email: input.email.toLowerCase() });
 
   // Always return success to prevent email enumeration
-  if (!admin) {
+  if (!user) {
     return {
       success: true,
       message: "If an account exists with this email, a reset link has been generated.",
     };
   }
 
-  // Delete any existing tokens for this admin
-  await PasswordResetToken.deleteMany({ adminId: admin._id });
+  // Delete any existing tokens for this user
+  await PasswordResetToken.deleteMany({ userId: user._id });
 
   // Generate new token
   const token = crypto.randomBytes(32).toString("hex");
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hour
 
   await PasswordResetToken.create({
-    adminId: admin._id,
+    userId: user._id,
     token,
     expiresAt,
   });
@@ -129,8 +131,8 @@ export async function resetPassword(input: ResetPasswordInput) {
   const salt = await bcrypt.genSalt(12);
   const hashedPassword = await bcrypt.hash(input.password, salt);
 
-  // Update the admin's password
-  await Admin.findByIdAndUpdate(resetToken.adminId, {
+  // Update the user's password
+  await User.findByIdAndUpdate(resetToken.userId, {
     password: hashedPassword,
   });
 
@@ -146,19 +148,19 @@ export async function resetPassword(input: ResetPasswordInput) {
 /**
  * Change password for logged-in user
  */
-export async function changePassword(adminId: string, input: ChangePasswordInput) {
+export async function changePassword(userId: string, input: ChangePasswordInput) {
   await connectToDatabase();
 
-  const admin = await Admin.findById(adminId).select("+password");
-  if (!admin) {
+  const user = await User.findById(userId).select("+password");
+  if (!user) {
     throw new TRPCError({
       code: "NOT_FOUND",
-      message: "Admin not found",
+      message: "User not found",
     });
   }
 
   // Verify current password
-  const isValid = await admin.comparePassword(input.currentPassword);
+  const isValid = await user.comparePassword(input.currentPassword);
   if (!isValid) {
     throw new TRPCError({
       code: "BAD_REQUEST",
@@ -168,8 +170,8 @@ export async function changePassword(adminId: string, input: ChangePasswordInput
 
   // Hash and save new password
   const salt = await bcrypt.genSalt(12);
-  admin.password = await bcrypt.hash(input.newPassword, salt);
-  await admin.save({ validateBeforeSave: false });
+  user.password = await bcrypt.hash(input.newPassword, salt);
+  await user.save({ validateBeforeSave: false });
 
   return {
     success: true,

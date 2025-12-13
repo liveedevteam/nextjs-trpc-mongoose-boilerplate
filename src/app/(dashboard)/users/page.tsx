@@ -180,7 +180,7 @@ export default function UsersPage() {
                       <td className="py-4 text-slate-300">{user.email}</td>
                       <td className="py-4">
                         <Badge
-                          variant={user.role === "admin" ? "default" : "secondary"}
+                          variant={user.role === "admin" ? "default" : "outline"}
                           className="gap-1"
                         >
                           {user.role === "admin" ? (

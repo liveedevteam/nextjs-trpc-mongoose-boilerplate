@@ -14,9 +14,9 @@ export const authRouter = createTRPCRouter({
   getSession: publicProcedure.query(({ ctx }) => ctx.session),
 
   /**
-   * Get current admin (protected)
+   * Get current user (protected)
    */
-  me: protectedProcedure.query(({ ctx }) => authService.getCurrentAdmin(ctx.session.user.id)),
+  me: protectedProcedure.query(({ ctx }) => authService.getCurrentUser(ctx.session.user.id)),
 
   /**
    * Request password reset - generates a reset token

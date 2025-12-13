@@ -55,7 +55,7 @@ export function AuthLayout({ children, className }: AuthLayoutProps) {
 interface AuthCardHeaderProps {
   icon: React.ComponentType<{ className?: string }>;
   title: string;
-  description?: string;
+  description?: React.ReactNode;
   iconVariant?: "default" | "success" | "error" | "warning";
   className?: string;
 }
