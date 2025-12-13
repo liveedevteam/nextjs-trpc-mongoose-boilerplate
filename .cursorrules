@@ -1,0 +1,542 @@
+# AI Instructions for Loops Backoffice
+
+## Project Overview
+
+Loops Backoffice is a Next.js 16 admin management system built with TypeScript. It provides authentication, admin user management, and a modern dark-themed UI.
+
+## Tech Stack
+
+### Core Framework
+- **Next.js 16** with App Router (server components by default)
+- **React 19** with React Compiler (babel-plugin-react-compiler)
+- **TypeScript 5** with strict mode
+
+### API Layer
+- **tRPC v11** for type-safe end-to-end APIs
+- **@tanstack/react-query** for client-side data fetching (via tRPC)
+- **SuperJSON** for serialization (handles Date objects, etc.)
+- **Zod v4** for input validation
+
+### Authentication
+- **NextAuth v5 (beta)** with credentials provider
+- JWT strategy for sessions
+- Protected routes via `protectedProcedure` in tRPC
+
+### Database
+- **MongoDB** with **Mongoose v9**
+- **migrate-mongo** for database migrations
+- Cached connection pattern for serverless environments
+
+### UI/Styling
+- **TailwindCSS v4** with PostCSS
+- **shadcn/ui** components (Radix UI primitives)
+- **tw-animate-css** for animations
+- **class-variance-authority** for component variants
+- **Lucide React** for icons
+- Navy blue sidebar theme with OKLCH color space
+
+## Project Structure
+
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── (auth)/            # Auth route group (login, register)
+│   ├── api/               # API routes
+│   │   ├── auth/          # NextAuth handlers
+│   │   └── trpc/          # tRPC HTTP handler
+│   ├── globals.css        # Global styles & CSS variables
+│   └── layout.tsx         # Root layout with TRPCProvider
+├── components/
+│   ├── ui/                # shadcn/ui base components
+│   ├── layout/            # Layout components (AppShell, Sidebar, Footer)
+│   ├── navigation/        # Navigation components (NavItem, NavGroup, UserMenu)
+│   ├── page/              # Page-level components (PageHeader, SectionCard, StatCard)
+│   └── common/            # Shared utility components (Badge, Avatar, FileInput)
+├── lib/
+│   ├── auth.ts            # NextAuth configuration
+│   ├── db/
+│   │   ├── connect.ts     # MongoDB connection (cached)
+│   │   ├── migrate.ts     # Migration runner
+│   │   └── models/        # Mongoose models
+│   ├── trpc/
+│   │   ├── client.ts      # tRPC React client
+│   │   ├── routers/       # tRPC routers
+│   │   ├── server.ts      # Server-side caller
+│   │   └── trpc.ts        # tRPC initialization
+│   └── utils.ts           # Utility functions (cn)
+├── providers/
+│   └── trpc-provider.tsx  # tRPC + React Query provider
+└── migrations/            # Database migrations
+```
+
+## UI Component Library
+
+### IMPORTANT: Always Reuse Existing Components First!
+
+Before creating new UI elements, **ALWAYS** check the existing component library:
+
+```typescript
+// Import from component index for convenience
+import {
+  // Layout
+  AppShell, AppShellSidebar, AppShellMain, AppShellContent,
+  Sidebar, SidebarBrand, SidebarNav, SidebarFooter,
+  MobileNav, Footer,
+  
+  // Navigation
+  NavItem, NavGroup, UserMenu,
+  
+  // Page Components
+  PageHeader, SectionCard, StatCard, StatCardGrid,
+  
+  // Common/Utility
+  Badge, StatusIndicator, Avatar, IconButton, FileInput, SelectField,
+  
+  // Base UI (shadcn)
+  Button, Card, CardHeader, CardContent, Input, Label,
+} from "@/components";
+```
+
+### Component Categories
+
+#### 1. Layout Components (`@/components/layout`)
+
+| Component | Purpose | When to Use |
+|-----------|---------|-------------|
+| `AppShell` | Main app layout wrapper | Root layout for authenticated pages |
+| `AppShellSidebar` | Sidebar container | Contains navigation sidebar |
+| `AppShellMain` | Main content wrapper | Contains page content |
+| `Sidebar` | Navigation sidebar | Always for main navigation |
+| `SidebarBrand` | Logo/brand in sidebar | Top of sidebar |
+| `SidebarNav` | Nav items container | Wrap NavItem components |
+| `MobileNav` | Mobile header with hamburger | Responsive mobile navigation |
+| `Footer` | App footer | Bottom of main content |
+
+**Example - Dashboard Layout:**
+```typescript
+export default function DashboardLayout({ children }) {
+  return (
+    <AppShell>
+      <AppShellSidebar>
+        <Sidebar>
+          <SidebarBrand icon={CalendarIcon} title="Loops Event" subtitle="Manager" />
+          <SidebarNav>
+            <NavItem href="/" icon={HomeIcon} exact>Home</NavItem>
+            <NavItem href="/bookings" icon={BookIcon}>Event Bookings</NavItem>
+          </SidebarNav>
+          <SidebarFooter>
+            <UserMenu name="Admin User" role="Administrator" />
+          </SidebarFooter>
+        </Sidebar>
+      </AppShellSidebar>
+      <AppShellMain>
+        <MobileNav brandIcon={CalendarIcon} brandTitle="Loops Event" />
+        <AppShellContent>{children}</AppShellContent>
+        <Footer version="2.1.0" status="online" />
+      </AppShellMain>
+    </AppShell>
+  );
+}
+```
+
+#### 2. Navigation Components (`@/components/navigation`)
+
+| Component | Purpose | Props |
+|-----------|---------|-------|
+| `NavItem` | Sidebar nav link | `href`, `icon`, `badge?`, `exact?` |
+| `NavGroup` | Group nav items | `label?`, `collapsible?` |
+| `UserMenu` | User profile section | `name`, `role?`, `avatarSrc?`, `onLogout?` |
+
+#### 3. Page Components (`@/components/page`)
+
+| Component | Purpose | Props |
+|-----------|---------|-------|
+| `PageHeader` | Page title & actions | `title`, `description?`, `children` |
+| `SectionCard` | Content section | `title`, `description?`, `icon?`, `onIconClick?` |
+| `StatCard` | Statistics display | `label`, `value`, `icon?`, `variant?` |
+| `StatCardGrid` | Grid for StatCards | `columns?` (1-4) |
+
+**Example - Page Structure:**
+```typescript
+export default function VehiclePage() {
+  return (
+    <>
+      <PageHeader 
+        title="Vehicle Assignments"
+        description="Download, upload, and manage vehicle assignments for events"
+      >
+        <Button variant="outline">
+          <BellIcon /> Notifications
+          <Badge variant="notification">3</Badge>
+        </Button>
+        <Button><DownloadIcon /> Export All</Button>
+      </PageHeader>
+      
+      <div className="p-6 space-y-6">
+        <StatCardGrid columns={3}>
+          <StatCard label="Total Bookings" value={1247} icon={CalendarIcon} variant="blue" />
+          <StatCard label="Active Events" value={23} icon={CheckSquareIcon} variant="teal" />
+          <StatCard label="Downloads Today" value={47} icon={DownloadIcon} variant="indigo" />
+        </StatCardGrid>
+        
+        <SectionCard
+          title="Download Booking Data"
+          description="Filter and download booking data by event and status"
+          icon={DownloadIcon}
+        >
+          <div className="grid gap-4 sm:grid-cols-2">
+            <SelectField
+              label="Select Event"
+              labelIcon={CalendarIcon}
+              placeholder="Choose an event..."
+              helperText="Filter bookings by specific event"
+              options={events}
+            />
+            <SelectField
+              label="Booking Status"
+              labelIcon={FilterIcon}
+              placeholder="All Statuses"
+              options={statuses}
+            />
+          </div>
+          <Button className="mt-4"><DownloadIcon /> Download</Button>
+        </SectionCard>
+      </div>
+    </>
+  );
+}
+```
+
+#### 4. Common Components (`@/components/common`)
+
+| Component | Purpose | Props |
+|-----------|---------|-------|
+| `Badge` | Status/notification badge | `variant`, `color?` |
+| `StatusIndicator` | Online/offline dot | `status`, `label?` |
+| `Avatar` | User avatar | `src?`, `fallback`, `size?` |
+| `IconButton` | Icon-only button | `icon`, `size?`, `variant?` |
+| `FileInput` | File upload input | `label?`, `accept?`, `maxSize?`, `helperText?` |
+| `SelectField` | Styled select dropdown | `label?`, `labelIcon?`, `options`, `helperText?` |
+
+### Design Tokens & Styling
+
+#### Color Variables (use CSS variables)
+```css
+/* Primary - Navy theme for sidebar */
+--sidebar: oklch(0.208 0.042 265.755);        /* Navy 900 */
+--sidebar-accent: oklch(0.279 0.041 260.031); /* Navy 800 */
+
+/* Accent - Blue for actions */
+--primary: oklch(0.546 0.245 262.881);        /* Blue 600 */
+--blue-400: oklch(0.707 0.165 254.624);       /* For active icons */
+
+/* Status Colors */
+--success: oklch(0.723 0.191 142.542);        /* Green */
+--warning: oklch(0.769 0.188 70.08);          /* Amber */
+--error: oklch(0.627 0.257 29.234);           /* Red */
+```
+
+#### Gradient Classes for StatCard
+```typescript
+variant="blue"    // gradient-blue (navy to blue)
+variant="teal"    // gradient-teal (dark teal to light teal)
+variant="indigo"  // gradient-indigo (indigo to violet)
+variant="navy"    // gradient-navy (dark navy to light navy)
+```
+
+#### Standard Spacing
+- Card padding: `p-6`
+- Section gap: `space-y-6`
+- Form element gap: `space-y-4` or `gap-4`
+- Inline element gap: `gap-2` or `gap-3`
+
+### Component Selection Guide
+
+**Need a page layout?**
+→ Use `AppShell` + `Sidebar` + `AppShellMain`
+
+**Need a page header with title and actions?**
+→ Use `PageHeader`
+
+**Need to display statistics?**
+→ Use `StatCard` in `StatCardGrid`
+
+**Need a form section with title?**
+→ Use `SectionCard`
+
+**Need a file upload?**
+→ Use `FileInput`
+
+**Need a styled dropdown?**
+→ Use `SelectField`
+
+**Need a notification badge?**
+→ Use `Badge variant="notification"`
+
+**Need a status indicator?**
+→ Use `StatusIndicator`
+
+**Need an icon-only button?**
+→ Use `IconButton`
+
+**Need a user avatar?**
+→ Use `Avatar`
+
+---
+
+## Code Conventions
+
+### tRPC Routers
+
+Create routers in `src/lib/trpc/routers/` and register them in `index.ts`:
+
+```typescript
+import { z } from "zod";
+import { TRPCError } from "@trpc/server";
+import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { connectToDatabase } from "@/lib/db/connect";
+
+export const exampleRouter = createTRPCRouter({
+  // Public endpoint
+  publicQuery: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {
+      await connectToDatabase();
+      // ... implementation
+    }),
+
+  // Protected endpoint (requires auth)
+  protectedMutation: protectedProcedure
+    .input(z.object({ name: z.string().min(2) }))
+    .mutation(async ({ ctx, input }) => {
+      // ctx.session.user is available and typed
+      await connectToDatabase();
+      // ... implementation
+    }),
+});
+```
+
+**Important**: Always call `await connectToDatabase()` at the start of database operations.
+
+### Mongoose Models
+
+Define models in `src/lib/db/models/`:
+
+```typescript
+import mongoose, { Schema, Model } from "mongoose";
+
+export interface IExample {
+  _id: mongoose.Types.ObjectId;
+  field: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const exampleSchema = new Schema<IExample>(
+  {
+    field: {
+      type: String,
+      required: [true, "Field is required"],
+      trim: true,
+    },
+  },
+  { timestamps: true }
+);
+
+// Prevent model recompilation during hot reload
+const Example =
+  (mongoose.models.Example as Model<IExample>) ||
+  mongoose.model<IExample>("Example", exampleSchema);
+
+export default Example;
+```
+
+### React Components
+
+**Always import from the component library first:**
+
+```typescript
+"use client";
+
+import {
+  PageHeader,
+  SectionCard,
+  StatCard,
+  StatCardGrid,
+  Button,
+  SelectField,
+  FileInput,
+} from "@/components";
+import { trpc } from "@/lib/trpc/client";
+
+export default function ExamplePage() {
+  const { data, isLoading } = trpc.example.list.useQuery();
+  const mutation = trpc.example.create.useMutation({
+    onSuccess: () => {
+      // Invalidate and refetch
+    },
+  });
+
+  return (
+    <>
+      <PageHeader title="Example Page" description="Manage examples">
+        <Button>Create New</Button>
+      </PageHeader>
+      
+      <div className="p-6 space-y-6">
+        <SectionCard title="Section Title" description="Section description">
+          {/* Content */}
+        </SectionCard>
+      </div>
+    </>
+  );
+}
+```
+
+### Styling Conventions
+
+- Use the design system CSS variables (defined in `globals.css`)
+- Use `cn()` utility from `@/lib/utils` for conditional classes
+- Use gradient utilities for stat cards: `gradient-blue`, `gradient-teal`, etc.
+- Follow consistent spacing: `p-6` for cards, `space-y-6` for sections
+
+### Authentication
+
+Check auth status in components:
+
+```typescript
+import { auth } from "@/lib/auth";
+
+// Server Component
+export default async function Page() {
+  const session = await auth();
+  if (!session) redirect("/login");
+  // ...
+}
+```
+
+```typescript
+// Client Component - use tRPC
+const { data: session } = trpc.auth.getSession.useQuery();
+```
+
+### Database Migrations
+
+Create migrations:
+```bash
+npm run migrate:create -- <migration-name>
+```
+
+Migration file structure:
+```javascript
+module.exports = {
+  async up(db) {
+    await db.collection("admins").createIndex({ email: 1 }, { unique: true });
+  },
+  async down(db) {
+    await db.collection("admins").dropIndex("email_1");
+  },
+};
+```
+
+Run migrations:
+```bash
+npm run migrate:up    # Apply migrations
+npm run migrate:down  # Rollback last migration
+npm run migrate:status # Check migration status
+```
+
+## Environment Variables
+
+Required in `.env.local`:
+```
+MONGODB_URI=mongodb://localhost:27017/loops-backoffice
+AUTH_SECRET=<generate-with-openssl-rand-base64-32>
+```
+
+## API Patterns
+
+### Error Handling
+
+Use TRPCError for consistent error responses:
+
+```typescript
+import { TRPCError } from "@trpc/server";
+
+// Not found
+throw new TRPCError({
+  code: "NOT_FOUND",
+  message: "Resource not found",
+});
+
+// Conflict (e.g., duplicate)
+throw new TRPCError({
+  code: "CONFLICT",
+  message: "Resource already exists",
+});
+
+// Unauthorized
+throw new TRPCError({
+  code: "UNAUTHORIZED",
+  message: "Not authenticated",
+});
+
+// Bad request
+throw new TRPCError({
+  code: "BAD_REQUEST",
+  message: "Invalid input",
+});
+```
+
+### Response Patterns
+
+Return consistent response shapes:
+
+```typescript
+// Single resource
+return {
+  id: doc._id.toString(),
+  name: doc.name,
+  email: doc.email,
+  createdAt: doc.createdAt,
+};
+
+// List
+return items.map((item) => ({
+  id: item._id.toString(),
+  // ... fields
+}));
+
+// Mutation success
+return { success: true };
+
+// Mutation with data
+return {
+  success: true,
+  data: { /* ... */ },
+};
+```
+
+## Commands
+
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
+
+## Best Practices
+
+1. **Always use TypeScript** - No `any` types, leverage Zod for runtime validation
+2. **Server Components first** - Only use `"use client"` when necessary
+3. **Centralize database connection** - Always use `connectToDatabase()` helper
+4. **Keep routers focused** - One router per domain/feature
+5. **Use protected procedures** - For any endpoint requiring authentication
+6. **Transform MongoDB docs** - Convert `_id` to `id` string in responses
+7. **Validate all inputs** - Use Zod schemas for tRPC inputs
+8. **Handle loading states** - Always account for `isLoading` in queries
+9. **Use proper form validation** - react-hook-form with @hookform/resolvers/zod
+10. **Reuse UI components** - Always check `@/components` before creating new UI elements
+11. **Follow the design system** - Use design tokens and consistent styling
+12. **Mobile-first responsive** - Design for mobile, enhance for desktop
