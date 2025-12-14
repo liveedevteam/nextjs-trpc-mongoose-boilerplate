@@ -1,6 +1,7 @@
 "use client";
 
-import * as React from "react";
+import { useId, useRef, useState } from "react";
+import type { ChangeEvent, DragEvent } from "react";
 import { FileIcon, X, Folder } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
@@ -30,11 +31,11 @@ export function FileInput({
   className,
   id,
 }: FileInputProps) {
-  const generatedId = React.useId();
+  const generatedId = useId();
   const inputId = id ?? generatedId;
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const [file, setFile] = React.useState<File | null>(null);
-  const [isDragging, setIsDragging] = React.useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleFileChange = (selectedFile: File | null) => {
     if (selectedFile && maxSize) {
@@ -48,12 +49,12 @@ export function FileInput({
     onChange?.(selectedFile);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0] || null;
     handleFileChange(selectedFile);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = (e: DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
     if (disabled) return;
@@ -78,7 +79,7 @@ export function FileInput({
     }
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
     if (!disabled) setIsDragging(true);
   };

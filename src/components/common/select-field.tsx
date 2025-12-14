@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useId } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
