@@ -568,3 +568,194 @@ return { success: true };
 11. **Follow the design system** - Use design tokens and consistent styling
 12. **Mobile-first responsive** - Design for mobile, enhance for desktop
 13. **Role-based UI** - Conditionally render based on `session.user.role`
+
+## React & Linting Guidelines
+
+### React Hooks Best Practices
+
+**CRITICAL: Always follow the Rules of Hooks**
+
+1. **Import hooks directly** - Use named imports instead of namespace imports:
+   ```typescript
+   // ✅ CORRECT
+   import { useState, useEffect, useId, useRef } from "react";
+   import type { ChangeEvent, FormEvent } from "react";
+
+   // ❌ AVOID - Can cause linting issues
+   import * as React from "react";
+   const [state, setState] = React.useState();
+   ```
+
+2. **Call hooks at the top level** - Never call hooks inside conditions, loops, or nested functions:
+   ```typescript
+   // ✅ CORRECT
+   function Component({ optional }: Props) {
+     const id = useId();  // Always called
+     const inputId = optional ?? id;  // Use conditional for values, not hooks
+
+     if (condition) return null;  // Early returns OK after hooks
+   }
+
+   // ❌ INCORRECT
+   function Component({ optional }: Props) {
+     if (optional) return null;  // Early return BEFORE hooks
+     const id = useId();  // This hook won't always run!
+   }
+   ```
+
+3. **Call hooks in the same order** - Every render must call the same hooks in the same order:
+   ```typescript
+   // ✅ CORRECT
+   function Component({ showExtra }: Props) {
+     const [name, setName] = useState("");
+     const [age, setAge] = useState(0);
+     // Both hooks always called
+
+     return showExtra ? <ExtraForm /> : <BasicForm />;
+   }
+
+   // ❌ INCORRECT
+   function Component({ showExtra }: Props) {
+     const [name, setName] = useState("");
+     if (showExtra) {
+       const [extra, setExtra] = useState("");  // Conditional hook!
+     }
+   }
+   ```
+
+4. **useId for accessible forms** - Always generate stable IDs for form elements:
+   ```typescript
+   export function FormField({ id: providedId, label }: Props) {
+     const generatedId = useId();  // Always called
+     const fieldId = providedId ?? generatedId;  // Fallback pattern
+
+     return (
+       <div>
+         <label htmlFor={fieldId}>{label}</label>
+         <input id={fieldId} />
+       </div>
+     );
+   }
+   ```
+
+### Code Quality & Linting
+
+1. **Remove unused imports** - Always clean up imports before committing:
+   ```bash
+   npm run lint         # Check for issues
+   npm run lint --fix   # Auto-fix what's possible
+   ```
+
+2. **No unused variables** - Remove or prefix with underscore:
+   ```typescript
+   // ✅ CORRECT
+   const { name, age } = user;  // Both used
+
+   // ✅ CORRECT for intentionally unused
+   const { name, _age } = user;  // age intentionally ignored
+
+   // ❌ INCORRECT
+   const { name, age } = user;  // age defined but never used
+   ```
+
+3. **Type imports** - Use `type` keyword for type-only imports:
+   ```typescript
+   // ✅ CORRECT
+   import type { User, Role } from "@/types";
+   import type { LucideIcon } from "lucide-react";
+
+   // Also correct for mixed imports
+   import { Button } from "@/components/ui/button";
+   import type { ButtonProps } from "@/components/ui/button";
+   ```
+
+4. **Event handler types** - Import event types directly:
+   ```typescript
+   import type { ChangeEvent, FormEvent, MouseEvent } from "react";
+
+   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+     console.log(e.target.value);
+   };
+
+   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+     e.preventDefault();
+   };
+   ```
+
+5. **Pre-commit hooks** - Fix all linting errors before committing:
+   - The project uses husky pre-commit hooks
+   - ESLint must pass before commits are allowed
+   - Run `npm run lint --fix` to auto-fix issues
+   - Manually fix any remaining errors
+
+### Common ESLint Errors & Fixes
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `react-hooks/rules-of-hooks` | Hook called conditionally | Move hook to top level, use conditional logic for values instead |
+| `@typescript-eslint/no-unused-vars` | Variable/import never used | Remove the variable/import or prefix with `_` if intentional |
+| `react/jsx-key` | Missing key in list | Add unique `key` prop to elements in `.map()` |
+| `@typescript-eslint/no-explicit-any` | Using `any` type | Use proper TypeScript types or `unknown` |
+| `react-hooks/exhaustive-deps` | Missing dependency in useEffect | Add the dependency or use ESLint disable comment if intentional |
+
+### Component Structure Template
+
+```typescript
+"use client";
+
+// 1. External library imports
+import { useState, useEffect, useId } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { LucideIcon } from "lucide-react";
+
+// 2. Internal component imports
+import { Button, Input, Label } from "@/components";
+
+// 3. Utility imports
+import { cn } from "@/lib/utils";
+import { trpc } from "@/lib/trpc/client";
+
+// 4. Types and interfaces
+interface ComponentProps {
+  id?: string;
+  onSubmit?: (value: string) => void;
+}
+
+// 5. Component definition
+export function Component({ id: providedId, onSubmit }: ComponentProps) {
+  // 6. Hooks (always at the top, same order every render)
+  const generatedId = useId();
+  const [value, setValue] = useState("");
+  const mutation = trpc.example.create.useMutation();
+
+  // 7. Derived values
+  const fieldId = providedId ?? generatedId;
+
+  // 8. Event handlers
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    onSubmit?.(value);
+  };
+
+  // 9. Effects (if needed)
+  useEffect(() => {
+    // Side effects
+  }, [/* dependencies */]);
+
+  // 10. Early returns (AFTER all hooks)
+  if (mutation.isLoading) return <div>Loading...</div>;
+
+  // 11. Render
+  return (
+    <form onSubmit={handleSubmit}>
+      <Label htmlFor={fieldId}>Field</Label>
+      <Input id={fieldId} value={value} onChange={handleChange} />
+      <Button type="submit">Submit</Button>
+    </form>
+  );
+}
+```
