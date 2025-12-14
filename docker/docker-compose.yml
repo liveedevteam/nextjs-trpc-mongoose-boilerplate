@@ -4,8 +4,8 @@ services:
   # Next.js Application
   app:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: docker/Dockerfile
     ports:
       - "3000:3000"
     environment:
@@ -64,4 +64,3 @@ volumes:
 networks:
   app-network:
     driver: bridge
-
