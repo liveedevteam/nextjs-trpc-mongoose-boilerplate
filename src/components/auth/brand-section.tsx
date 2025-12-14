@@ -51,7 +51,7 @@ export function BrandSection({ className }: BrandSectionProps) {
       <div className="space-y-8">
         <div className="space-y-4">
           <h1 className="text-4xl font-bold leading-tight text-white xl:text-5xl">
-            Welcome Back to Your Event Management Hub
+            Welcome Back to Your Admin Boilerplate
           </h1>
           <p className="text-lg text-blue-100/80">
             Streamline your travel bookings, manage vehicle assignments, and
