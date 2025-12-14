@@ -39,7 +39,7 @@ export function SelectField({
   className,
   id,
 }: SelectFieldProps) {
-  const generatedId = React.useId();
+  const generatedId = useId();
   const selectId = id ?? generatedId;
 
   return (
