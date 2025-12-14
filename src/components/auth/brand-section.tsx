@@ -42,7 +42,7 @@ export function BrandSection({ className }: BrandSectionProps) {
           <Calendar className="h-6 w-6 text-blue-300" />
         </div>
         <div>
-          <h2 className="text-xl font-bold text-white">Loops Event Manager</h2>
+          <h2 className="text-xl font-bold text-white">Boilerplate</h2>
           <p className="text-sm text-blue-200/70">Administrative Portal</p>
         </div>
       </div>
@@ -100,7 +100,7 @@ export function MobileHeader({ className }: MobileHeaderProps) {
         <Calendar className="h-5 w-5 text-blue-300" />
       </div>
       <div>
-        <h2 className="text-lg font-bold text-white">Loops Event Manager</h2>
+        <h2 className="text-lg font-bold text-white">Boilerplate</h2>
       </div>
     </div>
   );

@@ -234,7 +234,7 @@ export default function LoginPage() {
 
       {/* Footer */}
       <footer className="flex flex-col items-center justify-between gap-4 border-t border-border bg-background px-6 py-4 text-sm text-muted-foreground sm:flex-row">
-        <div>© {new Date().getFullYear()} Loops Event Manager. All rights reserved.</div>
+        <div>© {new Date().getFullYear()} Boilerplate. All rights reserved.</div>
         <nav className="flex items-center gap-4">
           <Link href="/privacy" className="transition-colors hover:text-foreground">
             Privacy Policy

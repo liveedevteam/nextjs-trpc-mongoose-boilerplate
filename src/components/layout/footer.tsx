@@ -22,7 +22,7 @@ export function Footer({
   version,
   status = "online",
   statusLabel,
-  copyright = `© ${new Date().getFullYear()} Loops Event Manager. All rights reserved.`,
+  copyright = `© ${new Date().getFullYear()} Boilerplate. All rights reserved.`,
   links = [],
 }: FooterProps) {
   const defaultStatusLabel =
