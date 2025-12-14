@@ -71,7 +71,7 @@ export function SelectField({
             !value && "text-muted-foreground"
           )}
         >
-          <option value="" disabled className="dark:bg-card">
+          <option value="" disabled>
             {placeholder}
           </option>
           {options.map((option) => (
@@ -79,7 +79,6 @@ export function SelectField({
               key={option.value}
               value={option.value}
               disabled={option.disabled}
-              className="dark:bg-card"
             >
               {option.label}
             </option>

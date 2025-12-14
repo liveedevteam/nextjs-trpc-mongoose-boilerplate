@@ -331,8 +331,8 @@ export default function UsersPage() {
                   {...register("role")}
                   className="w-full h-9 rounded-md bg-slate-700/50 border border-slate-500/50 px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
                 >
-                  <option value="user" className="bg-slate-700">User</option>
-                  <option value="admin" className="bg-slate-700">Admin</option>
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
                 </select>
                 {errors.role && (
                   <p className="text-sm text-red-400">{errors.role.message}</p>
