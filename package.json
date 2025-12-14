@@ -14,9 +14,11 @@
     "migrate:status": "migrate-mongo status",
     "seed:user": "tsx scripts/seed-user.ts",
     "change-password": "tsx scripts/change-password.ts",
-    "docker:dev": "docker-compose -f docker-compose.dev.yml up",
-    "docker:dev:build": "docker-compose -f docker-compose.dev.yml up --build",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up -d && npm run dev",
+    "docker:dev:db": "docker-compose -f docker-compose.dev.yml up -d",
+    "docker:dev:build": "docker-compose -f docker-compose.dev.yml up --build -d && npm run dev",
     "docker:dev:down": "docker-compose -f docker-compose.dev.yml down",
+    "docker:dev:logs": "docker-compose -f docker-compose.dev.yml logs -f",
     "docker:prod": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "prepare": "husky"
