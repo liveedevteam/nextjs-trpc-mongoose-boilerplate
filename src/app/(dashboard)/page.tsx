@@ -60,87 +60,87 @@ export default async function DashboardPage() {
           description="This boilerplate includes everything you need to build a full-stack application"
           icon={Rocket}
         >
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-6 sm:grid-cols-2">
             <div className="space-y-3">
-              <h4 className="font-medium text-white">Core Stack</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+              <h4 className="font-semibold text-foreground">Core Stack</h4>
+              <ul className="space-y-2.5 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-primary shadow-sm shadow-primary/50" />
                   Next.js 16 with App Router
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-primary shadow-sm shadow-primary/50" />
                   React 19 with React Compiler
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-primary shadow-sm shadow-primary/50" />
                   TypeScript 5 (strict mode)
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-primary shadow-sm shadow-primary/50" />
                   TailwindCSS v4 + shadcn/ui
                 </li>
               </ul>
             </div>
             <div className="space-y-3">
-              <h4 className="font-medium text-white">Backend & Data</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
+              <h4 className="font-semibold text-foreground">Backend & Data</h4>
+              <ul className="space-y-2.5 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-success shadow-sm shadow-success/50" />
                   tRPC v11 for type-safe APIs
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-success shadow-sm shadow-success/50" />
                   Mongoose v9 with MongoDB
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-success shadow-sm shadow-success/50" />
                   NextAuth v5 authentication
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-success shadow-sm shadow-success/50" />
                   Zod v4 for validation
                 </li>
               </ul>
             </div>
             <div className="space-y-3">
-              <h4 className="font-medium text-white">Authentication</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+              <h4 className="font-semibold text-foreground">Authentication</h4>
+              <ul className="space-y-2.5 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-chart-4 shadow-sm shadow-chart-4/50" />
                   JWT-based sessions
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-chart-4 shadow-sm shadow-chart-4/50" />
                   Role-based access (admin/user)
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-chart-4 shadow-sm shadow-chart-4/50" />
                   Password reset flow
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-chart-4 shadow-sm shadow-chart-4/50" />
                   Protected routes & procedures
                 </li>
               </ul>
             </div>
             <div className="space-y-3">
-              <h4 className="font-medium text-white">DevOps</h4>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+              <h4 className="font-semibold text-foreground">DevOps</h4>
+              <ul className="space-y-2.5 text-sm text-muted-foreground">
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-warning shadow-sm shadow-warning/50" />
                   Docker support (full stack)
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-warning shadow-sm shadow-warning/50" />
                   Database migrations
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-warning shadow-sm shadow-warning/50" />
                   Seed scripts
                 </li>
-                <li className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
+                <li className="flex items-center gap-2.5">
+                  <span className="h-2 w-2 rounded-full bg-warning shadow-sm shadow-warning/50" />
                   ESLint configured
                 </li>
               </ul>
@@ -154,30 +154,30 @@ export default async function DashboardPage() {
           description="Quick steps to start building your application"
         >
           <div className="space-y-4">
-            <div className="rounded-lg bg-slate-800/50 p-4">
-              <h4 className="font-mono text-sm font-medium text-white mb-2">
+            <div className="rounded-xl bg-accent/50 border border-border p-4 transition-colors hover:bg-accent/70">
+              <h4 className="font-mono text-sm font-semibold text-foreground mb-2">
                 1. Customize the User model
               </h4>
-              <p className="text-sm text-slate-400">
-                Edit <code className="text-blue-400">src/lib/db/models/user.ts</code> to
+              <p className="text-sm text-muted-foreground">
+                Edit <code className="text-primary font-medium px-1.5 py-0.5 rounded bg-primary/10">src/lib/db/models/user.ts</code> to
                 add fields specific to your application.
               </p>
             </div>
-            <div className="rounded-lg bg-slate-800/50 p-4">
-              <h4 className="font-mono text-sm font-medium text-white mb-2">
+            <div className="rounded-xl bg-accent/50 border border-border p-4 transition-colors hover:bg-accent/70">
+              <h4 className="font-mono text-sm font-semibold text-foreground mb-2">
                 2. Create new tRPC routers
               </h4>
-              <p className="text-sm text-slate-400">
-                Add routers in <code className="text-blue-400">src/lib/trpc/routers/</code> and
+              <p className="text-sm text-muted-foreground">
+                Add routers in <code className="text-primary font-medium px-1.5 py-0.5 rounded bg-primary/10">src/lib/trpc/routers/</code> and
                 register them in the index file.
               </p>
             </div>
-            <div className="rounded-lg bg-slate-800/50 p-4">
-              <h4 className="font-mono text-sm font-medium text-white mb-2">
+            <div className="rounded-xl bg-accent/50 border border-border p-4 transition-colors hover:bg-accent/70">
+              <h4 className="font-mono text-sm font-semibold text-foreground mb-2">
                 3. Add new pages
               </h4>
-              <p className="text-sm text-slate-400">
-                Create pages in <code className="text-blue-400">src/app/(dashboard)/</code> using
+              <p className="text-sm text-muted-foreground">
+                Create pages in <code className="text-primary font-medium px-1.5 py-0.5 rounded bg-primary/10">src/app/(dashboard)/</code> using
                 the existing UI components.
               </p>
             </div>

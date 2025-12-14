@@ -39,26 +39,26 @@ export function UserMenu({
   const content = (
     <div
       className={cn(
-        "flex items-center gap-3 rounded-lg p-2 transition-colors",
+        "flex items-center gap-3 rounded-lg p-2 transition-all",
         profileHref && "hover:bg-sidebar-accent/50",
         className
       )}
     >
       <Avatar src={avatarSrc} fallback={fallback} size="md" />
       <div className="flex min-w-0 flex-1 flex-col">
-        <span className="truncate text-sm font-medium text-white">{name}</span>
-        <span className="truncate text-xs text-sidebar-foreground/70">
+        <span className="truncate text-sm font-semibold text-white">{name}</span>
+        <span className="truncate text-xs text-sidebar-foreground/80">
           {role || email}
         </span>
       </div>
       {profileHref && (
-        <ChevronRight className="h-4 w-4 shrink-0 text-sidebar-foreground/50" />
+        <ChevronRight className="h-4 w-4 shrink-0 text-sidebar-foreground/60" />
       )}
       {onLogout && !profileHref && (
         <button
           type="button"
           onClick={onLogout}
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sidebar-foreground/50 transition-colors hover:bg-sidebar-accent hover:text-white"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg text-sidebar-foreground/60 transition-all hover:bg-sidebar-accent hover:text-white hover:scale-105"
           aria-label="Sign out"
         >
           <LogOut className="h-4 w-4" />

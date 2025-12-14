@@ -255,30 +255,32 @@ export default function UsersPage() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-lg bg-slate-900 border border-slate-700 p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-xl bg-slate-800 border border-slate-600/50 p-6 shadow-2xl">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-white">
+              <h2 className="text-xl font-semibold text-white">
                 {editingUser ? "Edit User" : "Create User"}
               </h2>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={closeModal}
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 text-slate-400 hover:text-white hover:bg-slate-700"
               >
                 <X className="h-4 w-4" />
               </Button>
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name" className="text-slate-200 font-medium">
+                  Name
+                </Label>
                 <Input
                   id="name"
                   {...register("name")}
                   placeholder="Enter name"
-                  className="bg-slate-800 border-slate-700"
+                  className="bg-slate-700/50 border-slate-500/50 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500/20"
                 />
                 {errors.name && (
                   <p className="text-sm text-red-400">{errors.name.message}</p>
@@ -286,13 +288,15 @@ export default function UsersPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-slate-200 font-medium">
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"
                   {...register("email")}
                   placeholder="Enter email"
-                  className="bg-slate-800 border-slate-700"
+                  className="bg-slate-700/50 border-slate-500/50 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500/20"
                 />
                 {errors.email && (
                   <p className="text-sm text-red-400">{errors.email.message}</p>
@@ -300,15 +304,18 @@ export default function UsersPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">
-                  Password {editingUser && "(leave blank to keep current)"}
+                <Label htmlFor="password" className="text-slate-200 font-medium">
+                  Password{" "}
+                  {editingUser && (
+                    <span className="text-slate-400 font-normal">(leave blank to keep current)</span>
+                  )}
                 </Label>
                 <Input
                   id="password"
                   type="password"
                   {...register("password")}
                   placeholder={editingUser ? "••••••••" : "Enter password"}
-                  className="bg-slate-800 border-slate-700"
+                  className="bg-slate-700/50 border-slate-500/50 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-blue-500/20"
                 />
                 {errors.password && (
                   <p className="text-sm text-red-400">{errors.password.message}</p>
@@ -316,14 +323,16 @@ export default function UsersPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="role">Role</Label>
+                <Label htmlFor="role" className="text-slate-200 font-medium">
+                  Role
+                </Label>
                 <select
                   id="role"
                   {...register("role")}
-                  className="w-full rounded-md bg-slate-800 border border-slate-700 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-9 rounded-md bg-slate-700/50 border border-slate-500/50 px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-colors"
                 >
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
+                  <option value="user" className="bg-slate-700">User</option>
+                  <option value="admin" className="bg-slate-700">Admin</option>
                 </select>
                 {errors.role && (
                   <p className="text-sm text-red-400">{errors.role.message}</p>
@@ -331,20 +340,26 @@ export default function UsersPage() {
               </div>
 
               {(createMutation.error || updateMutation.error) && (
-                <div className="rounded-md bg-red-500/10 border border-red-500/20 p-3">
+                <div className="rounded-lg bg-red-500/10 border border-red-500/30 p-3">
                   <p className="text-sm text-red-400">
                     {createMutation.error?.message || updateMutation.error?.message}
                   </p>
                 </div>
               )}
 
-              <div className="flex justify-end gap-3 pt-4">
-                <Button type="button" variant="outline" onClick={closeModal}>
+              <div className="flex justify-end gap-3 pt-4 border-t border-slate-600/50">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={closeModal}
+                  className="border-slate-500 text-slate-200 hover:bg-slate-700 hover:text-white"
+                >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting || createMutation.isPending || updateMutation.isPending}
+                  className="bg-blue-600 hover:bg-blue-500 text-white"
                 >
                   {(isSubmitting || createMutation.isPending || updateMutation.isPending) && (
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />

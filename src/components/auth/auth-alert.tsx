@@ -18,7 +18,7 @@ export function AuthAlert({
 }: AuthAlertProps) {
   const variantClasses = {
     error: "border-error/30 bg-error/10 text-error",
-    info: "border-blue-200 bg-blue-50 text-blue-700",
+    info: "border-primary/30 bg-primary/10 text-primary dark:border-blue-400/30 dark:bg-blue-400/10 dark:text-blue-400",
     warning: "border-warning/30 bg-warning/10 text-warning",
     success: "border-success/30 bg-success/10 text-success",
   };
@@ -26,7 +26,7 @@ export function AuthAlert({
   return (
     <div
       className={cn(
-        "flex items-center gap-2 rounded-lg border p-3 text-sm",
+        "flex items-center gap-3 rounded-lg border p-3 text-sm font-medium",
         variantClasses[variant],
         className
       )}

@@ -108,7 +108,7 @@ export default function ForgotPasswordPage() {
             <div className="space-y-2">
               <Label
                 htmlFor="email"
-                className="flex items-center gap-2 text-sidebar-foreground"
+                className="flex items-center gap-2 text-sidebar-foreground font-medium"
               >
                 <Mail className="h-4 w-4 text-blue-400" />
                 Email
@@ -120,7 +120,7 @@ export default function ForgotPasswordPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="border-sidebar-border bg-sidebar-accent/50 text-white placeholder:text-sidebar-foreground/50 focus:border-primary focus:ring-primary"
+                className="border-sidebar-border/50 bg-sidebar-accent/30 text-white placeholder:text-sidebar-foreground/50 focus:border-primary focus:ring-primary/30 hover:border-sidebar-border"
               />
             </div>
           </AuthCardContent>

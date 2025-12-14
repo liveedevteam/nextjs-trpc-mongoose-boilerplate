@@ -33,12 +33,12 @@ export function SectionCard({
   contentClassName,
 }: SectionCardProps) {
   return (
-    <Card className={cn("border-border bg-card shadow-sm", className)}>
+    <Card className={cn("border-border bg-card shadow-sm dark:shadow-lg dark:shadow-black/5", className)}>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-primary">
+        <CardTitle className="text-lg font-semibold text-foreground">
           {title}
         </CardTitle>
-        {description && <CardDescription>{description}</CardDescription>}
+        {description && <CardDescription className="text-muted-foreground">{description}</CardDescription>}
         {icon && (
           <CardAction>
             <IconButton

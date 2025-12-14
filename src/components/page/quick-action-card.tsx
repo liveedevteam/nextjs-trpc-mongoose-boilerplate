@@ -22,23 +22,23 @@ export function QuickActionCard({
   icon: Icon,
   title,
   description,
-  iconColor = "text-blue-500",
-  iconBgColor = "bg-blue-500/10",
+  iconColor = "text-primary",
+  iconBgColor = "bg-primary/10",
   className,
 }: QuickActionCardProps) {
   return (
     <Link href={href} className={cn("group", className)}>
-      <div className="flex items-center gap-4 rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/50 hover:bg-accent">
+      <div className="flex items-center gap-4 rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:border-primary/50 hover:bg-accent hover:shadow-md dark:shadow-black/5">
         <div
           className={cn(
-            "flex h-12 w-12 shrink-0 items-center justify-center rounded-lg",
+            "flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-transform group-hover:scale-105",
             iconBgColor
           )}
         >
           <Icon className={cn("h-6 w-6", iconColor)} />
         </div>
         <div>
-          <h3 className="font-medium text-foreground group-hover:text-primary">
+          <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
             {title}
           </h3>
           <p className="text-sm text-muted-foreground">{description}</p>

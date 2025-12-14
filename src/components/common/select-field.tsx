@@ -39,7 +39,8 @@ export function SelectField({
   className,
   id,
 }: SelectFieldProps) {
-  const selectId = id || React.useId();
+  const generatedId = React.useId();
+  const selectId = id ?? generatedId;
 
   return (
     <div className={cn("space-y-2", className)}>
@@ -60,8 +61,9 @@ export function SelectField({
           onChange={(e) => onChange?.(e.target.value)}
           disabled={disabled}
           className={cn(
-            "w-full appearance-none rounded-lg border bg-background px-3 py-2.5 pr-10 text-sm transition-colors",
-            "focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20",
+            "w-full appearance-none rounded-lg border bg-transparent px-3 py-2.5 pr-10 text-sm text-foreground transition-all",
+            "dark:bg-input/50 dark:border-border",
+            "focus:border-primary focus:outline-none focus:ring-[3px] focus:ring-primary/30",
             error
               ? "border-error focus:border-error focus:ring-error/20"
               : "border-input hover:border-primary/50",
@@ -69,7 +71,7 @@ export function SelectField({
             !value && "text-muted-foreground"
           )}
         >
-          <option value="" disabled>
+          <option value="" disabled className="dark:bg-card">
             {placeholder}
           </option>
           {options.map((option) => (
@@ -77,6 +79,7 @@ export function SelectField({
               key={option.value}
               value={option.value}
               disabled={option.disabled}
+              className="dark:bg-card"
             >
               {option.label}
             </option>

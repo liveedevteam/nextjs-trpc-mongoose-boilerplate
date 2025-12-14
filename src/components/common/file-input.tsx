@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Upload, FileIcon, X, Folder } from "lucide-react";
+import { FileIcon, X, Folder } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
 interface FileInputProps {
@@ -31,7 +30,8 @@ export function FileInput({
   className,
   id,
 }: FileInputProps) {
-  const inputId = id || React.useId();
+  const generatedId = React.useId();
+  const inputId = id ?? generatedId;
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [file, setFile] = React.useState<File | null>(null);
   const [isDragging, setIsDragging] = React.useState(false);
@@ -112,9 +112,10 @@ export function FileInput({
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         className={cn(
-          "relative flex items-center gap-3 rounded-lg border bg-background px-3 py-2 transition-colors",
+          "relative flex items-center gap-3 rounded-lg border bg-transparent px-3 py-2.5 transition-all",
+          "dark:bg-input/50 dark:border-border",
           isDragging
-            ? "border-primary bg-primary/5"
+            ? "border-primary bg-primary/5 ring-[3px] ring-primary/30"
             : "border-input hover:border-primary/50",
           disabled && "cursor-not-allowed opacity-50"
         )}

@@ -8,19 +8,19 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground",
+          "rounded-full bg-muted px-2.5 py-0.5 text-xs text-foreground/80",
         notification:
-          "min-w-[1.25rem] rounded-full bg-blue-600 px-1.5 py-0.5 text-xs text-white",
-        status: "rounded-full px-2.5 py-0.5 text-xs",
+          "min-w-[1.25rem] rounded-full bg-primary px-1.5 py-0.5 text-xs text-primary-foreground font-semibold shadow-sm",
+        status: "rounded-full px-2.5 py-0.5 text-xs font-medium",
         outline:
-          "rounded-full border border-border bg-transparent px-2.5 py-0.5 text-xs text-muted-foreground",
+          "rounded-full border border-border bg-transparent px-2.5 py-0.5 text-xs text-foreground/70",
       },
       color: {
         default: "",
-        success: "bg-success/15 text-success",
-        warning: "bg-warning/15 text-warning",
-        error: "bg-error/15 text-error",
-        blue: "bg-blue-600/15 text-blue-600",
+        success: "bg-success/20 text-success dark:bg-success/15",
+        warning: "bg-warning/20 text-warning dark:bg-warning/15",
+        error: "bg-error/20 text-error dark:bg-error/15",
+        blue: "bg-primary/20 text-primary dark:bg-primary/15",
       },
     },
     defaultVariants: {

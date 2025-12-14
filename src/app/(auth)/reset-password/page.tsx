@@ -148,7 +148,7 @@ function ResetPasswordForm() {
             <div className="space-y-2">
               <Label
                 htmlFor="password"
-                className="flex items-center gap-2 text-sidebar-foreground"
+                className="flex items-center gap-2 text-sidebar-foreground font-medium"
               >
                 <Lock className="h-4 w-4 text-blue-400" />
                 New Password
@@ -161,9 +161,9 @@ function ResetPasswordForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="border-sidebar-border bg-sidebar-accent/50 text-white placeholder:text-sidebar-foreground/50 focus:border-primary focus:ring-primary"
+                className="border-sidebar-border/50 bg-sidebar-accent/30 text-white placeholder:text-sidebar-foreground/50 focus:border-primary focus:ring-primary/30 hover:border-sidebar-border"
               />
-              <p className="text-xs text-sidebar-foreground/50">
+              <p className="text-xs text-sidebar-foreground/60">
                 Must be at least 6 characters
               </p>
             </div>
@@ -171,7 +171,7 @@ function ResetPasswordForm() {
             <div className="space-y-2">
               <Label
                 htmlFor="confirmPassword"
-                className="flex items-center gap-2 text-sidebar-foreground"
+                className="flex items-center gap-2 text-sidebar-foreground font-medium"
               >
                 <Lock className="h-4 w-4 text-blue-400" />
                 Confirm Password
@@ -184,7 +184,7 @@ function ResetPasswordForm() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 minLength={6}
-                className="border-sidebar-border bg-sidebar-accent/50 text-white placeholder:text-sidebar-foreground/50 focus:border-primary focus:ring-primary"
+                className="border-sidebar-border/50 bg-sidebar-accent/30 text-white placeholder:text-sidebar-foreground/50 focus:border-primary focus:ring-primary/30 hover:border-sidebar-border"
               />
             </div>
           </AuthCardContent>

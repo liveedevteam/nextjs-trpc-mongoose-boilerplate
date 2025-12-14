@@ -34,16 +34,16 @@ export function StatCard({
   return (
     <div
       className={cn(
-        "relative flex flex-col justify-between overflow-hidden rounded-xl p-5 text-white shadow-md",
+        "relative flex flex-col justify-between overflow-hidden rounded-xl p-5 text-white shadow-lg transition-transform hover:scale-[1.02] hover:shadow-xl",
         variantClasses[variant],
         className
       )}
     >
       <div className="space-y-2">
-        <p className="text-sm font-medium text-white/80">{label}</p>
+        <p className="text-sm font-medium text-white/90">{label}</p>
         <p
           className={cn(
-            "text-3xl font-bold tracking-tight",
+            "text-3xl font-bold tracking-tight drop-shadow-sm",
             valueClassName
           )}
         >
@@ -51,8 +51,8 @@ export function StatCard({
         </p>
       </div>
       {Icon && (
-        <div className="absolute right-4 top-4 opacity-30">
-          <Icon className="h-12 w-12" />
+        <div className="absolute right-4 top-4 opacity-25">
+          <Icon className="h-14 w-14" />
         </div>
       )}
     </div>

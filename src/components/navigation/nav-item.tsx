@@ -36,8 +36,8 @@ export function NavItem({
       className={cn(
         "group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all",
         isActive
-          ? "bg-sidebar-accent text-white"
-          : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground",
+          ? "bg-sidebar-accent text-white shadow-sm"
+          : "text-sidebar-foreground/80 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground",
         className
       )}
     >
@@ -46,7 +46,7 @@ export function NavItem({
           "h-5 w-5 shrink-0 transition-colors",
           isActive
             ? "text-blue-400"
-            : "text-sidebar-foreground/50 group-hover:text-sidebar-foreground/70"
+            : "text-sidebar-foreground/60 group-hover:text-sidebar-foreground/80"
         )}
       />
       <span className="flex-1 truncate">{children}</span>

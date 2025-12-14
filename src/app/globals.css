@@ -111,69 +111,105 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.623 0.214 259.815);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.623 0.214 259.815);
+  --background: oklch(0.145 0.015 265);
+  --foreground: oklch(0.95 0 0);
+  --card: oklch(0.18 0.02 265);
+  --card-foreground: oklch(0.95 0 0);
+  --popover: oklch(0.18 0.02 265);
+  --popover-foreground: oklch(0.95 0 0);
+  --primary: oklch(0.65 0.2 259);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.25 0.02 265);
+  --secondary-foreground: oklch(0.95 0 0);
+  --muted: oklch(0.25 0.02 265);
+  --muted-foreground: oklch(0.65 0 0);
+  --accent: oklch(0.28 0.025 265);
+  --accent-foreground: oklch(0.95 0 0);
+  --destructive: oklch(0.65 0.22 25);
+  --border: oklch(0.35 0.03 265);
+  --input: oklch(0.28 0.025 265);
+  --ring: oklch(0.65 0.2 259);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
   --chart-4: oklch(0.627 0.265 303.9);
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.623 0.214 259.815);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar-primary: oklch(0.65 0.2 259);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
   --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.279 0.041 260.031);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(0.35 0.03 265);
+  --sidebar-ring: oklch(0.65 0.2 259);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    @apply antialiased;
+  }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  /* Improve text rendering */
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight;
+  }
+  /* Better scrollbar for dark mode */
+  .dark ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+  .dark ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
   }
 }
 
 /* Utility Classes for Design System */
 @layer utilities {
-  /* Gradient backgrounds for stat cards */
+  /* Gradient backgrounds for stat cards - improved with better color stops */
   .gradient-blue {
-    background: linear-gradient(135deg, oklch(0.279 0.041 260.031) 0%, oklch(0.546 0.245 262.881) 100%);
+    background: linear-gradient(135deg, oklch(0.32 0.06 260) 0%, oklch(0.55 0.22 260) 100%);
   }
   
   .gradient-teal {
-    background: linear-gradient(135deg, oklch(0.467 0.157 192.524) 0%, oklch(0.627 0.194 180.426) 100%);
+    background: linear-gradient(135deg, oklch(0.42 0.12 185) 0%, oklch(0.58 0.15 175) 100%);
   }
   
   .gradient-indigo {
-    background: linear-gradient(135deg, oklch(0.457 0.24 277.023) 0%, oklch(0.585 0.233 277.117) 100%);
+    background: linear-gradient(135deg, oklch(0.40 0.18 280) 0%, oklch(0.55 0.20 275) 100%);
   }
   
   .gradient-navy {
-    background: linear-gradient(135deg, oklch(0.208 0.042 265.755) 0%, oklch(0.372 0.044 257.287) 100%);
+    background: linear-gradient(135deg, oklch(0.22 0.045 265) 0%, oklch(0.35 0.05 260) 100%);
   }
   
   /* Text utilities */
   .text-balance {
     text-wrap: balance;
+  }
+  
+  /* Focus ring utilities */
+  .focus-ring {
+    @apply outline-none focus-visible:ring-[3px] focus-visible:ring-primary/30 focus-visible:border-primary;
+  }
+  
+  /* Glass effect for cards */
+  .glass {
+    @apply backdrop-blur-xl bg-card/80;
+  }
+  
+  /* Smooth shadow transitions */
+  .shadow-transition {
+    @apply transition-shadow duration-200;
   }
 }

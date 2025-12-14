@@ -15,7 +15,7 @@ export function AuthCard({ children, className }: AuthCardProps) {
   return (
     <Card
       className={cn(
-        "relative w-full max-w-md border-sidebar-border bg-sidebar/80 backdrop-blur-xl shadow-2xl",
+        "relative w-full max-w-md border-sidebar-border/50 bg-sidebar/90 backdrop-blur-xl shadow-2xl shadow-black/20",
         className
       )}
     >
@@ -89,7 +89,7 @@ export function AuthCardHeader({
       <div className="flex justify-center">
         <div
           className={cn(
-            "flex h-16 w-16 items-center justify-center rounded-2xl shadow-lg",
+            "flex h-16 w-16 items-center justify-center rounded-2xl shadow-lg shadow-black/20",
             iconBgClasses[iconVariant]
           )}
         >
@@ -99,7 +99,7 @@ export function AuthCardHeader({
       <div>
         <h1 className="text-2xl font-bold text-white">{title}</h1>
         {description && (
-          <p className="mt-1 text-sm text-sidebar-foreground/70">{description}</p>
+          <p className="mt-2 text-sm text-sidebar-foreground/80 leading-relaxed">{description}</p>
         )}
       </div>
     </CardHeader>
